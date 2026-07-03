@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Long Polling</title>
+  </head>
+  <body>
+    <div id="data-container"></div>
+    <script>
+      const longPoll = async (lastData) => {
+        const url = `http://localhost:3030/getData?lastData=${lastData}`; // Replace with your server endpoint and any necessary parameters
+        try {
+          const response = await fetch(url);
+          const result = await response.json();
+          console.log(result.data);
+          document.getElementById("data-container").innerHTML = result.data;
+          // Process the received data here
+          longPoll(result.data);
+        } catch (error) {
+          console.error("Error during long polling:", error);
+        }
+      };
+
+      // Start the long polling
+      longPoll();
+    </script>
+  </body>
+</html>
